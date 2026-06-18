@@ -109,7 +109,7 @@ export default function Register() {
             <AlertCircle size={18} className="shrink-0 mt-0.5" />
             <span>{error}</span>
           </div>
-        )}
+        )};
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
