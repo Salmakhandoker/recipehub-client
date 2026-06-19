@@ -138,6 +138,16 @@ export default function RecipeDetails() {
       setIsFavoriting(false);
     }
   };
+  // clickable purchased btn****
+
+ 
+  // or router.push('/purchased-recipes');
+
+
+//     const handlePurchased = () => {
+//   console.log("Purchased button clicked");
+// };
+ 
 
   const handleReport = async (e) => {
     e.preventDefault();
@@ -279,6 +289,28 @@ export default function RecipeDetails() {
             <Heart size={18} className={isFavorited ? "fill-red-500 text-red-500" : "text-foreground-custom/75"} />
             <span>{isFavorited ? 'Favorited' : 'Add to Favorites'}</span>
           </button>
+
+
+
+          {/* add purchased btn *****/}
+       {/* <button
+  onClick={handlePurchased}
+  
+  className={`flex items-center space-x-2 border px-5 py-3 rounded-2xl text-sm font-semibold transition-all
+    ${
+      isPurchased
+        ? "border-green-300 bg-green-50 text-green-600"
+        : "border-border-custom bg-card-custom text-foreground-custom/60"
+    }
+  `}
+>
+  <Check size={18} />
+  <span>
+    {isPurchased ? "Purchased" : "Not Purchased"}
+  </span>
+</button> */}
+
+
 
           <button
             onClick={() => setShowReportModal(true)}
