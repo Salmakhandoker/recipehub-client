@@ -20,6 +20,48 @@ export default function Register() {
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setUploadingImage(true);
+    setError('');
+
+    const body = new FormData();
+    body.append('image', file);
+
+    try {
+      const imgbb_API_KEY = process.env.NEXT_PUBLIC_IMAGE_UPLOAD_API;
+      if (!imgbb_API_KEY) {
+        setError('ImgBB API key is not configured.');
+        setUploadingImage(false);
+        return;
+      }
+
+      const imgbbRes = await fetch(`https://api.imgbb.com/1/upload?key=${imgbb_API_KEY}`, {
+        method: 'POST',
+        body
+      });
+
+      if (imgbbRes.ok) {
+        const imgbbData = await imgbbRes.json();
+        if (imgbbData.success) {
+          setFormData(prev => ({ ...prev, image: imgbbData.data.url }));
+        } else {
+          setError(imgbbData.error?.message || 'Failed to upload image to ImgBB.');
+        }
+      } else {
+        setError('Failed to upload image. Server responded with error.');
+      }
+    } catch (err) {
+      console.error(err);
+      setError('ImgBB upload request failed.');
+    } finally {
+      setUploadingImage(false);
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -109,7 +151,7 @@ export default function Register() {
             <AlertCircle size={18} className="shrink-0 mt-0.5" />
             <span>{error}</span>
           </div>
-        )};
+        )}
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
@@ -140,15 +182,35 @@ export default function Register() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-foreground-custom">Profile Image URL (Optional)</label>
-              <input
-                name="image"
-                type="url"
-                value={formData.image}
-                onChange={handleChange}
-                placeholder="https://example.com/avatar.jpg"
-                className="w-full bg-card-custom border border-border-custom rounded-2xl p-3 text-sm text-foreground-custom placeholder-foreground-custom/30 focus:outline-none focus:border-brand"
-              />
+              <label className="text-xs font-bold text-foreground-custom">Profile Image (Optional)</label>
+              <div className="flex items-center space-x-4">
+                <div className="flex-grow">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="w-full bg-card-custom border border-border-custom rounded-2xl p-2.5 text-xs text-foreground-custom focus:outline-none focus:border-brand"
+                    disabled={uploadingImage || loading}
+                  />
+                  {uploadingImage && <p className="text-[10px] text-brand animate-pulse mt-1">Uploading to ImgBB...</p>}
+                </div>
+                {formData.image && (
+                  <div className="h-12 w-12 rounded-full overflow-hidden border border-brand shrink-0">
+                    <img src={formData.image} alt="Profile Preview" className="h-full w-full object-cover" />
+                  </div>
+                )}
+              </div>
+              <div className="space-y-1.5 mt-2">
+                <span className="text-[10px] font-bold text-foreground-custom/60 block">Or paste Direct Image URL</span>
+                <input
+                  name="image"
+                  type="url"
+                  value={formData.image}
+                  onChange={handleChange}
+                  placeholder="https://example.com/avatar.jpg"
+                  className="w-full bg-card-custom border border-border-custom rounded-2xl p-3 text-sm text-foreground-custom placeholder-foreground-custom/30 focus:outline-none focus:border-brand"
+                />
+              </div>
             </div>
 
             <div className="space-y-1.5">
@@ -160,7 +222,7 @@ export default function Register() {
                 className="w-full bg-card-custom border border-border-custom rounded-2xl p-3 text-sm text-foreground-custom focus:outline-none focus:border-brand"
               >
                 <option value="user">User (Standard Member)</option>
-                <option value="admin">Admin (Site Administrator)</option>
+                {/* <option value="admin">Admin (Site Administrator)</option> */}
               </select>
             </div>
 

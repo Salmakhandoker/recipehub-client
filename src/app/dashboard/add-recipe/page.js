@@ -90,10 +90,14 @@ export default function AddRecipe() {
     body.append('image', file);
 
     try {
-      // Using a reliable public API key for uploader demo
-      
       const imgbb_API_KEY = process.env.NEXT_PUBLIC_IMAGE_UPLOAD_API;
-      const imgbbRes = await fetch(`https://api.imgbb.com/1/upload?key=${key}`, {
+      if (!imgbb_API_KEY) {
+        setError('ImgBB API key is not configured.');
+        setUploadingImage(false);
+        return;
+      }
+
+      const imgbbRes = await fetch(`https://api.imgbb.com/1/upload?key=${imgbb_API_KEY}`, {
         method: 'POST',
         body
       });
@@ -103,10 +107,10 @@ export default function AddRecipe() {
         if (imgbbData.success) {
           setFormData(prev => ({ ...prev, recipeImage: imgbbData.data.url }));
         } else {
-          setError('https://cdn.pixabay.com/photo/2024/04/21/12/06/ai-generated-8710412_1280.png.');
+          setError(imgbbData.error?.message || 'Failed to upload image to ImgBB.');
         }
       } else {
-        setError('https://cdn.pixabay.com/photo/2020/02/29/15/20/cake-4890393_1280.jpg.');
+        setError('Failed to upload image. Server responded with error.');
       }
     } catch (err) {
       console.error(err);

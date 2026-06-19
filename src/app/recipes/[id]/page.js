@@ -57,11 +57,24 @@ export default function RecipeDetails() {
     }
   };
 
+  const triggerAutoPurchase = async () => {
+    if (!user) return;
+    try {
+      await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/payments/auto-purchase`, {
+        method: 'POST',
+        body: JSON.stringify({ recipeId: id })
+      });
+    } catch (error) {
+      console.error("Failed to trigger auto-purchase on recipe view:", error);
+    }
+  };
+
   useEffect(() => {
     const loadAll = async () => {
       setLoading(true);
       await fetchDetails();
       if (user) {
+        await triggerAutoPurchase();
         await fetchPurchased();
       }
       setLoading(false);

@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
 import { authClient } from '@/lib/auth-client';
 import { Loader2, AlertCircle, ChefHat } from 'lucide-react';
 
-export default function Login() {
+function LoginComponent() {
   const { setUser, fetchFavorites, user } = useApp();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -212,5 +212,13 @@ export default function Login() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Login() {
+  return (
+    <Suspense fallback={<div className="flex-grow flex items-center justify-center min-h-[50vh]"><Loader2 className="animate-spin text-brand" size={36} /></div>}>
+      <LoginComponent />
+    </Suspense>
   );
 }
