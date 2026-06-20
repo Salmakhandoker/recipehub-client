@@ -292,7 +292,7 @@ export default function RecipeDetails() {
 
 
 
-          {/* add purchased btn ***/}
+          {/* add purchased btn *****/}
        {/* <button
   onClick={handlePurchased}
   
