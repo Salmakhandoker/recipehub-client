@@ -138,7 +138,7 @@ export default function RecipeDetails() {
       setIsFavoriting(false);
     }
   };
-  // clickable purchased btn****
+  // clickable purchased btn**
 
  
   // or router.push('/purchased-recipes');
@@ -260,7 +260,7 @@ export default function RecipeDetails() {
         </div>
       </div>
 
-      {/* Recipe Image & Interactions */}
+      {/* Recipe Image & Interactions **/}
       <div className="space-y-4">
         <div className="relative h-[300px] sm:h-[450px] w-full rounded-3xl overflow-hidden border border-border-custom">
           <img
@@ -292,7 +292,7 @@ export default function RecipeDetails() {
 
 
 
-          {/* add purchased btn *****/}
+          {/* add purchased btn ***/}
        {/* <button
   onClick={handlePurchased}
   
@@ -325,7 +325,7 @@ export default function RecipeDetails() {
       {/* Recipe Content (Locked / Unlocked) */}
       <div className="pt-6">
         {hasAccess ? (
-          /* Unlocked / Authorized View */
+          /* Unlocked / Authorized View **/
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Ingredients */}
             <div className="md:col-span-1 space-y-4">
