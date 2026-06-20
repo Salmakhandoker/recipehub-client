@@ -27,6 +27,7 @@ export default function AddRecipe() {
     difficultyLevel: 'Easy',
     preparationTime: '',
     instructions: '',
+    isPremium: true,
   });
 
   const [ingredients, setIngredients] = useState(['']);
@@ -52,7 +53,8 @@ export default function AddRecipe() {
   }, [user]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    setFormData({ ...formData, [e.target.name]: value });
     setError('');
   };
 
@@ -124,7 +126,7 @@ export default function AddRecipe() {
     e.preventDefault();
     setError('');
 
-    const { recipeName, recipeImage, category, cuisineType, difficultyLevel, preparationTime, instructions } = formData;
+    const { recipeName, recipeImage, category, cuisineType, difficultyLevel, preparationTime, instructions, isPremium } = formData;
     const filteredIngredients = ingredients.map(i => i.trim()).filter(Boolean);
 
     if (!recipeName || !cuisineType || !preparationTime || !instructions || filteredIngredients.length === 0) {
@@ -144,7 +146,8 @@ export default function AddRecipe() {
           difficultyLevel,
           preparationTime,
           ingredients: filteredIngredients,
-          instructions
+          instructions,
+          isPremium
         })
       });
 
@@ -306,6 +309,8 @@ export default function AddRecipe() {
             />
           </div>
         </div>
+
+
 
         {/* Image Upload Block */}
         <div className="space-y-3">

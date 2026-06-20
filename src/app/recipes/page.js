@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ChefHat, Search, Filter, Clock, ThumbsUp, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ChefHat, Search, Filter, Clock, ThumbsUp, ChevronLeft, ChevronRight, X, Lock } from 'lucide-react';
 
 const CATEGORIES = ["Dessert", "Main Course", "Breakfast", "Beverage", "Salad", "Soup"];
 
@@ -181,6 +181,10 @@ export default function BrowseRecipes() {
                     />
                     <span className="absolute top-4 right-4 bg-brand text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
                       {recipe.category}
+                    </span>
+                    <span className="absolute top-4 left-4 bg-amber-500 text-white text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider shadow-md flex items-center gap-1">
+                      <Lock size={10} />
+                      $4.99 Unlock
                     </span>
                   </div>
 

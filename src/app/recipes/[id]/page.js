@@ -28,7 +28,7 @@ export default function RecipeDetails() {
 
   const fetchDetails = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/recipes/${id}`);
+      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/recipes/${id}`);
       if (res.ok) {
         const data = await res.json();
         if (data.success) {
@@ -57,24 +57,11 @@ export default function RecipeDetails() {
     }
   };
 
-  const triggerAutoPurchase = async () => {
-    if (!user) return;
-    try {
-      await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/payments/auto-purchase`, {
-        method: 'POST',
-        body: JSON.stringify({ recipeId: id })
-      });
-    } catch (error) {
-      console.error("Failed to trigger auto-purchase on recipe view:", error);
-    }
-  };
-
   useEffect(() => {
     const loadAll = async () => {
       setLoading(true);
       await fetchDetails();
       if (user) {
-        await triggerAutoPurchase();
         await fetchPurchased();
       }
       setLoading(false);
@@ -214,7 +201,7 @@ export default function RecipeDetails() {
   const isAuthor = user && recipe.authorEmail === user.email;
   const isAdmin = user && user.role === 'admin';
   const isPurchased = purchasedRecipes.some(purchase => purchase.recipeId === id);
-  const hasAccess = isAuthor || isAdmin || isPurchased;
+  const hasAccess = !recipe.isLocked;
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
@@ -292,23 +279,41 @@ export default function RecipeDetails() {
 
 
 
-          {/* add purchased btn *****/}
-       {/* <button
-  onClick={handlePurchased}
-  
-  className={`flex items-center space-x-2 border px-5 py-3 rounded-2xl text-sm font-semibold transition-all
-    ${
-      isPurchased
-        ? "border-green-300 bg-green-50 text-green-600"
-        : "border-border-custom bg-card-custom text-foreground-custom/60"
-    }
-  `}
->
-  <Check size={18} />
-  <span>
-    {isPurchased ? "Purchased" : "Not Purchased"}
-  </span>
-</button> */}
+          {isPurchased ? (
+            <button
+              disabled
+              className="flex items-center space-x-2 border border-green-300 bg-green-500/10 dark:bg-green-500/20 text-green-600 px-5 py-3 rounded-2xl text-sm font-semibold transition-all"
+            >
+              <Check size={18} className="text-green-600" />
+              <span>Purchased</span>
+            </button>
+          ) : isAuthor || isAdmin ? (
+            <button
+              disabled
+              className="flex items-center space-x-2 border border-border-custom bg-foreground-custom/5 text-foreground-custom/60 px-5 py-3 rounded-2xl text-sm font-semibold transition-all"
+            >
+              <Check size={18} />
+              <span>{isAuthor ? "Author Access" : "Admin Access"}</span>
+            </button>
+          ) : (
+            <button
+              onClick={handlePurchase}
+              disabled={isCheckingOut}
+              className="flex items-center space-x-2 border border-brand bg-brand text-white hover:bg-brand-hover px-5 py-3 rounded-2xl text-sm font-semibold transition-all shadow-md shadow-brand/10"
+            >
+              {isCheckingOut ? (
+                <>
+                  <Loader2 size={18} className="animate-spin" />
+                  <span>Processing...</span>
+                </>
+              ) : (
+                <>
+                  <Lock size={16} />
+                  <span>Buy Recipe ($4.99)</span>
+                </>
+              )}
+            </button>
+          )}
 
 
 

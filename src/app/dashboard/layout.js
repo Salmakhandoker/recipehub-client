@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
 import {
   LayoutDashboard, User, PlusCircle, BookOpen, Heart, ShoppingBag,
-  Users, AlertOctagon, FileText, Menu, X, Loader2, Award
+  Users, AlertOctagon, FileText, Menu, X, Loader2, Award, Star
 } from 'lucide-react';
 
 export default function DashboardLayout({ children }) {
@@ -46,6 +46,7 @@ export default function DashboardLayout({ children }) {
     { name: 'Admin Overview', href: '/dashboard/admin', icon: LayoutDashboard },
     { name: 'Manage Users', href: '/dashboard/admin/users', icon: Users },
     { name: 'Manage Recipes', href: '/dashboard/admin/recipes', icon: BookOpen },
+    { name: 'Featured Recipes', href: '/dashboard/admin/featured', icon: Star },
     { name: 'Recipe Reports', href: '/dashboard/admin/reports', icon: AlertOctagon },
     { name: 'Transactions', href: '/dashboard/admin/transactions', icon: FileText },
   ];

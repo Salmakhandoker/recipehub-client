@@ -21,6 +21,7 @@ export default function MyRecipes() {
     difficultyLevel: 'Easy',
     preparationTime: '',
     instructions: '',
+    isPremium: false,
   });
   const [editIngredients, setEditIngredients] = useState([]);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -80,12 +81,14 @@ export default function MyRecipes() {
       difficultyLevel: recipe.difficultyLevel || 'Easy',
       preparationTime: recipe.preparationTime,
       instructions: recipe.instructions,
+      isPremium: recipe.isPremium || false,
     });
     setEditIngredients(recipe.ingredients || []);
   };
 
   const handleEditChange = (e) => {
-    setEditFormData({ ...editFormData, [e.target.name]: e.target.value });
+    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    setEditFormData({ ...editFormData, [e.target.name]: value });
   };
 
   const handleIngredientChange = (index, value) => {
@@ -331,6 +334,24 @@ export default function MyRecipes() {
                   onChange={handleEditChange}
                   className="w-full bg-card-custom border border-border-custom rounded-xl p-2.5 text-sm text-foreground-custom focus:outline-none focus:border-brand"
                 />
+              </div>
+
+              {/* Recipe Access Toggle (Free/Premium) */}
+              <div className="bg-foreground-custom/[0.02] border border-border-custom rounded-2xl p-4 sm:p-5 flex items-center justify-between transition-all">
+                <div className="space-y-0.5">
+                  <label className="text-sm font-bold text-foreground-custom">Premium Recipe</label>
+                  <p className="text-xs text-foreground-custom/60">Premium recipes require a one-time Stripe payment of $4.99 to unlock for other users.</p>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    name="isPremium"
+                    checked={editFormData.isPremium}
+                    onChange={handleEditChange}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-foreground-custom/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand"></div>
+                </label>
               </div>
 
               {/* Ingredients Nested Form */}
