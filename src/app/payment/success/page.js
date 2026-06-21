@@ -37,7 +37,7 @@ function PaymentSuccessContent() {
             setPaymentData(data.data);
             setStatus('success');
             setMessage(data.message || 'Payment successfully processed!');
-            // Refresh auth state to update user.isPremium if upgraded
+            // Refresh auth state to update user.isPremium if upgraded**
             await checkAuth();
           } else {
             setStatus('error');
