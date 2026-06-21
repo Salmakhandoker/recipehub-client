@@ -93,7 +93,7 @@ export function AppProvider({ children }) {
     const res = await fetch(url, {
       ...options,
       headers,
-      credentials: 'include', // ensures cookies are sent/received
+      credentials: 'include', // ensures cookies are sent/received**
     });
 
     return res;
