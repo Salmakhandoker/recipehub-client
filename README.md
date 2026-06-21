@@ -14,8 +14,8 @@ A full-stack recipe sharing platform where food enthusiasts can create, discover
 
 | Field    | Value                    |
 |----------|--------------------------|
-| Email    | admin@recipehub.com      |
-| Password | Admin@123                |
+| Email    | admin@gmail.com    |
+| Password | Admin ......               |
 
 ---
 
@@ -104,6 +104,7 @@ A full-stack recipe sharing platform where food enthusiasts can create, discover
 
 ### Frontend
 - React.js
+- next.js
 - React Router DOM
 - Tailwind CSS
 - Framer Motion (animations)
@@ -150,7 +151,7 @@ VITE_IMGBB_API_KEY=your_imgbb_api_key
 
 ### Server `.env`
 ```env
-PORT=5000
+PORT=5001
 MONGODB_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
 STRIPE_SECRET_KEY=your_stripe_secret_key
