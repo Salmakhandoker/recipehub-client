@@ -39,7 +39,7 @@ export default function Home() {
 
   return (
     <div className="space-y-20 pb-20 overflow-x-hidden">
-      {/* 1. HERO BANNER SECTION */}
+      {/* 1. HERO BANNER SECTION **/}
       <section className="relative min-h-[85vh] flex items-center justify-center gradient-bg overflow-hidden py-20 px-4">
         {/* Decorative Blur Spheres */}
         <div className="absolute top-10 left-10 w-72 h-72 bg-brand/10 rounded-full blur-3xl" />
@@ -100,7 +100,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2. DYNAMIC SECTION 1: FEATURED RECIPES (Framer Motion Animation) */}
+      {/* 2. DYNAMIC SECTION 1: FEATURED RECIPES (Framer Motion Animation) **/}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="space-y-2">
