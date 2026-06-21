@@ -233,7 +233,7 @@ export default function AddRecipe() {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6 bg-card-custom border border-border-custom p-6 sm:p-8 rounded-3xl shadow-sm">
-        {/* Row 1: Name & Category */}
+        {/* Row 1: Name & Category **/}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="space-y-1.5">
             <label className="text-xs font-bold text-foreground-custom">Recipe Name *</label>
@@ -266,7 +266,7 @@ export default function AddRecipe() {
           </div>
         </div>
 
-        {/* Row 2: Cuisine, Difficulty, Prep Time */}
+        {/* Row 2: Cuisine, Difficulty, Prep Time **/}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div className="space-y-1.5">
             <label className="text-xs font-bold text-foreground-custom">Cuisine Type *</label>
