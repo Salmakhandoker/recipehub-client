@@ -67,7 +67,7 @@ export default function FeaturedRecipesManagement() {
     );
   }
 
-  // Filter lists
+  // Filter lists****
   const featuredRecipes = recipes.filter(r => r.isFeatured);
   const searchedRecipes = searchQuery.trim() === ''
     ? recipes.filter(r => !r.isFeatured).slice(0, 5) // Show some standard recipes if no search
@@ -77,7 +77,7 @@ export default function FeaturedRecipesManagement() {
          r.authorName.toLowerCase().includes(searchQuery.toLowerCase()))
       );
 
-  // Statistics
+  // Statistics**
   const totalFeatured = featuredRecipes.length;
   const totalLikesOnFeatured = featuredRecipes.reduce((sum, r) => sum + (r.likesCount || 0), 0);
   const averageLikes = totalFeatured > 0 ? (totalLikesOnFeatured / totalFeatured).toFixed(1) : 0;
@@ -92,7 +92,7 @@ export default function FeaturedRecipesManagement() {
         </div>
       </div>
 
-      {/* Stats Cards */}
+      {/* Stats Cards **/}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
         <div className="bg-card-custom border border-border-custom p-6 rounded-2xl">
           <p className="text-xs font-semibold text-foreground-custom/50 uppercase tracking-wider">Total Featured</p>
@@ -117,7 +117,7 @@ export default function FeaturedRecipesManagement() {
         </div>
       </div>
 
-      {/* Current Featured Recipes */}
+      {/* Current Featured Recipes **/}
       <div className="space-y-4">
         <h2 className="text-lg font-bold text-foreground-custom flex items-center gap-2">
           <Star className="text-yellow-400 fill-yellow-400" size={20} />
