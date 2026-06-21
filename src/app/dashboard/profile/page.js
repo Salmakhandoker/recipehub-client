@@ -112,7 +112,9 @@ export default function UserProfile() {
       if (res.ok) {
         const data = await res.json();
         if (data.success && data.url) {
-          // Redirect to Stripe Checkout
+
+          // Redirect to Stripe Checkout**
+
           window.location.href = data.url;
         } else {
           setError('Failed to create payment session.');
@@ -131,7 +133,7 @@ export default function UserProfile() {
 
   return (
     <div className="space-y-10 max-w-3xl mx-auto">
-      {/* Title */}
+      {/* Title **/}
       <div className="border-b border-border-custom pb-6">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground-custom tracking-tight">My Profile</h1>
         <p className="text-foreground-custom/60 text-sm">Update your personal credentials and upgrade your account tier.</p>
