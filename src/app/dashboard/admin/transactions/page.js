@@ -62,7 +62,7 @@ export default function AdminTransactions() {
           <p className="text-foreground-custom/60 text-sm">Monitor system revenues, premium membership sales, and individual recipe purchases.</p>
         </div>
         
-        {/* Total Revenues mini card */}
+        {/* Total Revenues mini card **/}
         <div className="bg-brand/10 border border-brand/20 py-3 px-6 rounded-2xl flex items-center space-x-3 shrink-0">
           <div className="p-2 bg-brand text-white rounded-xl">
             <DollarSign size={20} />
@@ -74,7 +74,7 @@ export default function AdminTransactions() {
         </div>
       </div>
 
-      {/* Transaction breakdown stats */}
+      {/* Transaction break-down stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div className="bg-card-custom border border-border-custom p-6 rounded-2xl flex items-center space-x-4">
           <div className="p-3 bg-amber-500/10 text-amber-500 rounded-xl">
