@@ -101,7 +101,7 @@ export default function Register() {
 
       const data = await res.json();
       if (res.ok && data.success) {
-        // Save token to localStorage
+        // Save token to localStorage*
         localStorage.setItem('token', data.token);
         setUser(data.user);
         
@@ -222,7 +222,7 @@ export default function Register() {
                 className="w-full bg-card-custom border border-border-custom rounded-2xl p-3 text-sm text-foreground-custom focus:outline-none focus:border-brand"
               >
                 <option value="user">User (Standard Member)</option>
-                {/* <option value="admin">Admin (Site Administrator)</option> */}
+                {/* <option value="admin">Admin (Site Administrator)</option> ****/}
               </select>
             </div>
 
