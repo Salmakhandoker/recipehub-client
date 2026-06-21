@@ -93,7 +93,7 @@ export function AppProvider({ children }) {
     const res = await fetch(url, {
       ...options,
       headers,
-      credentials: 'include', // ensures cookies are sent/received**
+      credentials: 'include', 
     });
 
     return res;
@@ -114,7 +114,7 @@ export function AppProvider({ children }) {
         const data = await res.json();
         if (data.success) {
           setUser(data.user);
-          // If logged in, fetch favorites
+          // If logged in, fetch favorites **
           fetchFavorites();
         } else {
           // Token expired or invalid
