@@ -250,4 +250,4 @@ This project is for educational and assessment purposes only.
 
 ---
 
-<p align="center">Made with ❤️ for RecipeHub Assessment</p>
+<p align="center">Made with Salma khandoker❤️ for RecipeHub Assessment</p>
