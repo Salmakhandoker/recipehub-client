@@ -30,14 +30,7 @@ export default function UserProfile() {
     body.append('image', file);
 
     try {
-      const imgbb_API_KEY = process.env.NEXT_PUBLIC_IMAGE_UPLOAD_API;
-      if (!imgbb_API_KEY) {
-        setError('ImgBB API key is not configured.');
-        setUploadingImage(false);
-        return;
-      }
-
-      const imgbbRes = await fetch(`https://api.imgbb.com/1/upload?key=${imgbb_API_KEY}`, {
+      const imgbbRes = await fetch(`/api/image-upload`, {
         method: 'POST',
         body
       });
@@ -78,7 +71,7 @@ export default function UserProfile() {
     setSuccess('');
 
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/profile`, {
+      const res = await fetchWithAuth(`/api/auth/profile`, {
         method: 'PUT',
         body: JSON.stringify(formData)
       });
@@ -104,7 +97,7 @@ export default function UserProfile() {
     setSuccess('');
 
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/create-checkout-session`, {
+      const res = await fetchWithAuth(`/api/create-checkout-session`, {
         method: 'POST',
         body: JSON.stringify({ type: 'premium' })
       });

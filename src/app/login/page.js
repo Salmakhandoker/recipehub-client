@@ -45,7 +45,7 @@ function LoginComponent() {
 
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/login`, {
+      const res = await fetch(`/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -59,7 +59,7 @@ function LoginComponent() {
         setUser(data.user);
         
         // Fetch favorites list
-        const favsRes = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/favorites`, {
+        const favsRes = await fetch(`/api/favorites`, {
           headers: {
             'Authorization': `Bearer ${data.token}`
           }

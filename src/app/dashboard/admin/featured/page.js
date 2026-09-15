@@ -17,7 +17,7 @@ export default function FeaturedRecipesManagement() {
   const fetchRecipes = async () => {
     setLoading(true);
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/recipes`);
+      const res = await fetchWithAuth(`/api/admin/recipes`);
       if (res.ok) {
         const data = await res.json();
         if (data.success) {
@@ -45,7 +45,7 @@ export default function FeaturedRecipesManagement() {
     const isFeatured = !currentFeatured;
     setActionId(recipeId);
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/recipes/${recipeId}/feature`, {
+      const res = await fetchWithAuth(`/api/admin/recipes/${recipeId}/feature`, {
         method: 'PUT',
         body: JSON.stringify({ isFeatured })
       });

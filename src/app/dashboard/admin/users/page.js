@@ -16,7 +16,7 @@ export default function ManageUsers() {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/users`);
+      const res = await fetchWithAuth(`/api/admin/users`);
       if (res.ok) {
         const data = await res.json();
         if (data.success) {
@@ -53,7 +53,7 @@ export default function ManageUsers() {
 
     setActionLoading(targetUser._id);
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/users/${targetUser._id}/${actionText}`, {
+      const res = await fetchWithAuth(`/api/admin/users/${targetUser._id}/${actionText}`, {
         method: 'PUT'
       });
       if (res.ok) {

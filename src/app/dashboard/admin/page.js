@@ -28,7 +28,7 @@ export default function AdminOverview() {
     const fetchAdminStats = async () => {
       setLoading(true);
       try {
-        const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/stats`);
+        const res = await fetchWithAuth(`/api/admin/stats`);
         if (res.ok) {
           const data = await res.json();
           if (data.success) {

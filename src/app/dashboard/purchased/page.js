@@ -14,7 +14,7 @@ export default function PurchasedRecipes() {
     const fetchPurchased = async () => {
       setLoading(true);
       try {
-        const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/payments/purchased`);
+        const res = await fetchWithAuth(`/api/payments/purchased`);
         if (res.ok) {
           const data = await res.json();
           if (data.success) {

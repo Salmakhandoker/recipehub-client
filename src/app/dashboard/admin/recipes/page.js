@@ -30,7 +30,7 @@ export default function ManageRecipes() {
   const fetchRecipes = async () => {
     setLoading(true);
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/recipes`);
+      const res = await fetchWithAuth(`/api/admin/recipes`);
       if (res.ok) {
         const data = await res.json();
         if (data.success) {
@@ -58,7 +58,7 @@ export default function ManageRecipes() {
     if (!window.confirm("Are you sure you want to delete this recipe?")) return;
 
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/recipes/${id}`, {
+      const res = await fetchWithAuth(`/api/admin/recipes/${id}`, {
         method: 'DELETE'
       });
       if (res.ok) {
@@ -75,7 +75,7 @@ export default function ManageRecipes() {
     const isFeatured = !recipe.isFeatured;
     setActionId(recipe._id);
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/recipes/${recipe._id}/feature`, {
+      const res = await fetchWithAuth(`/api/admin/recipes/${recipe._id}/feature`, {
         method: 'PUT',
         body: JSON.stringify({ isFeatured })
       });
@@ -130,7 +130,7 @@ export default function ManageRecipes() {
     const filteredIngredients = editIngredients.map(i => i.trim()).filter(Boolean);
 
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/recipes/${editingRecipe._id}`, {
+      const res = await fetchWithAuth(`/api/recipes/${editingRecipe._id}`, {
         method: 'PUT',
         body: JSON.stringify({
           ...editFormData,

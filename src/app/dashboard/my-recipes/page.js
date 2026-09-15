@@ -29,7 +29,7 @@ export default function MyRecipes() {
   const fetchMyRecipes = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/recipes`);
+      const res = await fetch(`/api/recipes`);
       if (res.ok) {
         const data = await res.json();
         if (data.success) {
@@ -56,7 +56,7 @@ export default function MyRecipes() {
     if (!window.confirm("Are you sure you want to delete this recipe?")) return;
 
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/recipes/${id}`, {
+      const res = await fetchWithAuth(`/api/recipes/${id}`, {
         method: 'DELETE'
       });
       if (res.ok) {
@@ -113,7 +113,7 @@ export default function MyRecipes() {
     const filteredIngredients = editIngredients.map(i => i.trim()).filter(Boolean);
 
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/recipes/${editingRecipe._id}`, {
+      const res = await fetchWithAuth(`/api/recipes/${editingRecipe._id}`, {
         method: 'PUT',
         body: JSON.stringify({
           ...editFormData,

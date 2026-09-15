@@ -20,7 +20,7 @@ export default function DashboardOverview() {
       setLoading(true);
       try {
         // Fetch stats
-        const statsRes = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/stats`);
+        const statsRes = await fetchWithAuth(`/api/auth/stats`);
         if (statsRes.ok) {
           const statsData = await statsRes.json();
           if (statsData.success) {
@@ -29,7 +29,7 @@ export default function DashboardOverview() {
         }
 
         // Fetch user's own recipes
-        const recipesRes = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/recipes`);
+        const recipesRes = await fetchWithAuth(`/api/recipes`);
         if (recipesRes.ok) {
           const recipesData = await recipesRes.json();
           if (recipesData.success) {

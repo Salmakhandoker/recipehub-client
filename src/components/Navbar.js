@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
-import { Menu, X, Sun, Moon, LogOut, User, LayoutDashboard, ChevronDown } from 'lucide-react';
+import { Menu, X, Sun, Moon, LogOut, User, LayoutDashboard, ChevronDown, Sparkles } from 'lucide-react';
 
 export default function Navbar() {
   const { user, theme, toggleTheme, logout } = useApp();
@@ -19,6 +19,7 @@ export default function Navbar() {
   const links = [
     { name: 'Home', href: '/' },
     { name: 'Browse Recipes', href: '/recipes' },
+    { name: 'AI Chef', href: '/ai-chef', isSpecial: true },
   ];
 
   return (
@@ -40,13 +41,21 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
-                className={`text-sm font-medium transition-colors ${
+                className={`text-sm font-medium transition-colors flex items-center gap-1.5 ${
                   isActive(link.href)
-                    ? 'text-brand'
+                    ? 'text-brand font-semibold'
+                    : link.isSpecial
+                    ? 'text-amber-500 hover:text-amber-600 font-semibold'
                     : 'text-foreground-custom/80 hover:text-brand'
                 }`}
               >
-                {link.name}
+                {link.isSpecial && <Sparkles size={14} className="text-amber-500 animate-pulse" />}
+                <span>{link.name}</span>
+                {link.isSpecial && (
+                  <span className="text-[10px] bg-amber-500/10 text-amber-500 font-bold px-1.5 py-0.5 rounded-full uppercase border border-amber-500/20">
+                    New
+                  </span>
+                )}
               </Link>
             ))}
           </div>
@@ -165,13 +174,23 @@ export default function Navbar() {
               key={link.name}
               href={link.href}
               onClick={() => setIsOpen(false)}
-              className={`block px-3 py-2 rounded-xl text-base font-medium transition-colors ${
+              className={`flex items-center justify-between px-3 py-2 rounded-xl text-base font-medium transition-colors ${
                 isActive(link.href)
                   ? 'bg-brand/10 text-brand'
+                  : link.isSpecial
+                  ? 'text-amber-500 font-semibold hover:bg-amber-500/10'
                   : 'text-foreground-custom/80 hover:bg-foreground-custom/5 hover:text-brand'
               }`}
             >
-              {link.name}
+              <span className="flex items-center gap-2">
+                {link.isSpecial && <Sparkles size={16} className="text-amber-500" />}
+                <span>{link.name}</span>
+              </span>
+              {link.isSpecial && (
+                <span className="text-[10px] bg-amber-500/10 text-amber-500 font-bold px-2 py-0.5 rounded-full uppercase border border-amber-500/20">
+                  New
+                </span>
+              )}
             </Link>
           ))}
 

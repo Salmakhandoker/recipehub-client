@@ -26,7 +26,7 @@ function PaymentSuccessContent() {
 
     const verifyPayment = async () => {
       try {
-        const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/payments/verify`, {
+        const res = await fetchWithAuth(`/api/payments/verify`, {
           method: 'POST',
           body: JSON.stringify({ sessionId })
         });

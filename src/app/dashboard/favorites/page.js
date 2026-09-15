@@ -22,7 +22,7 @@ export default function Favorites() {
     if (!window.confirm("Remove this recipe from your favorites?")) return;
 
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/favorites/${recipeId}`, {
+      const res = await fetchWithAuth(`/api/favorites/${recipeId}`, {
         method: 'DELETE'
       });
       if (res.ok) {

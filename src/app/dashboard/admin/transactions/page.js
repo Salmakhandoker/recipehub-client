@@ -20,7 +20,7 @@ export default function AdminTransactions() {
     const fetchTransactions = async () => {
       setLoading(true);
       try {
-        const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/transactions`);
+        const res = await fetchWithAuth(`/api/admin/transactions`);
         if (res.ok) {
           const data = await res.json();
           if (data.success) {

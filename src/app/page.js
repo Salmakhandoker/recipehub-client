@@ -14,8 +14,8 @@ export default function Home() {
     const fetchHomeData = async () => {
       try {
         const [featRes, popRes] = await Promise.all([
-          fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/recipes/featured`),
-          fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/recipes/popular`)
+          fetch(`/api/recipes/featured`),
+          fetch(`/api/recipes/popular`)
         ]);
 
         if (featRes.ok) {

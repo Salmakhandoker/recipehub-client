@@ -17,7 +17,7 @@ export default function RecipeReports() {
   const fetchReports = async () => {
     setLoading(true);
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/reports`);
+      const res = await fetchWithAuth(`/api/admin/reports`);
       if (res.ok) {
         const data = await res.json();
         if (data.success) {
@@ -46,7 +46,7 @@ export default function RecipeReports() {
     
     setActionLoading(reportId);
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/reports/${reportId}/dismiss`, {
+      const res = await fetchWithAuth(`/api/admin/reports/${reportId}/dismiss`, {
         method: 'PUT'
       });
       if (res.ok) {
@@ -68,7 +68,7 @@ export default function RecipeReports() {
 
     setActionLoading(reportId);
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/recipes/${recipeId}`, {
+      const res = await fetchWithAuth(`/api/admin/recipes/${recipeId}`, {
         method: 'DELETE'
       });
       if (res.ok) {

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
 import { loadStripe } from '@stripe/stripe-js';
-import { Clock, ThumbsUp, Heart, AlertTriangle, Lock, ChefHat, Check, Loader2, Calendar } from 'lucide-react';
+import { Clock, ThumbsUp, Heart, AlertTriangle, Lock, ChefHat, Check, Loader2, Calendar, Sparkles, Send, Bot, RefreshCw, MessageSquare } from 'lucide-react';
 
 export default function RecipeDetails() {
   const { id } = useParams();
@@ -24,11 +24,73 @@ export default function RecipeDetails() {
   const [isSubmittingReport, setIsSubmittingReport] = useState(false);
   const [reportSuccess, setReportSuccess] = useState(false);
 
+  // AI Sous Chef States
+  const [chefMessages, setChefMessages] = useState([]);
+  const [chefInput, setChefInput] = useState('');
+  const [isChefThinking, setIsChefThinking] = useState(false);
+
   const isFavorited = favorites.some(fav => fav.recipeId === id);
+
+  const handleAskSousChef = async (overrideQuestion = null) => {
+    const questionText = (overrideQuestion || chefInput).trim();
+    if (!questionText || isChefThinking || !recipe) return;
+
+    const userMessage = { role: 'user', content: questionText };
+    const updatedMessages = [...chefMessages, userMessage];
+    setChefMessages(updatedMessages);
+    setChefInput('');
+    setIsChefThinking(true);
+
+    try {
+      const res = await fetch('/api/ai/sous-chef', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          recipeId: id,
+          recipe: {
+            recipeName: recipe.recipeName,
+            category: recipe.category,
+            cuisineType: recipe.cuisineType,
+            difficultyLevel: recipe.difficultyLevel,
+            preparationTime: recipe.preparationTime,
+            ingredients: recipe.ingredients,
+            instructions: recipe.instructions,
+          },
+          question: questionText,
+          conversationHistory: updatedMessages.map(m => ({
+            role: m.role === 'user' ? 'user' : 'model',
+            content: m.content,
+          })),
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success && data.data?.answer) {
+        setChefMessages(prev => [
+          ...prev,
+          { role: 'assistant', content: data.data.answer }
+        ]);
+      } else {
+        setChefMessages(prev => [
+          ...prev,
+          { role: 'assistant', content: "I'm having a little trouble in the kitchen right now. Please try asking again!" }
+        ]);
+      }
+    } catch (err) {
+      console.error("Sous Chef Error:", err);
+      setChefMessages(prev => [
+        ...prev,
+        { role: 'assistant', content: "Failed to connect to the Sous-Chef. Please check your internet connection." }
+      ]);
+    } finally {
+      setIsChefThinking(false);
+    }
+  };
+
 
   const fetchDetails = async () => {
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/recipes/${id}`);
+      const res = await fetchWithAuth(`/api/recipes/${id}`);
       if (res.ok) {
         const data = await res.json();
         if (data.success) {
@@ -45,7 +107,7 @@ export default function RecipeDetails() {
   const fetchPurchased = async () => {
     if (!user) return;
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/payments/purchased`);
+      const res = await fetchWithAuth(`/api/payments/purchased`);
       if (res.ok) {
         const data = await res.json();
         if (data.success) {
@@ -77,7 +139,7 @@ export default function RecipeDetails() {
     if (isLiking) return;
     setIsLiking(true);
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/recipes/${id}/like`, {
+      const res = await fetchWithAuth(`/api/recipes/${id}/like`, {
         method: 'POST'
       });
       if (res.ok) {
@@ -103,7 +165,7 @@ export default function RecipeDetails() {
     try {
       if (isFavorited) {
         // Remove favorite
-        const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/favorites/${id}`, {
+        const res = await fetchWithAuth(`/api/favorites/${id}`, {
           method: 'DELETE'
         });
         if (res.ok) {
@@ -111,7 +173,7 @@ export default function RecipeDetails() {
         }
       } else {
         // Add favorite
-        const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/favorites`, {
+        const res = await fetchWithAuth(`/api/favorites`, {
           method: 'POST',
           body: JSON.stringify({ recipeId: id })
         });
@@ -144,7 +206,7 @@ export default function RecipeDetails() {
     }
     setIsSubmittingReport(true);
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/recipes/${id}/report`, {
+      const res = await fetchWithAuth(`/api/recipes/${id}/report`, {
         method: 'POST',
         body: JSON.stringify({ reason: reportReason })
       });
@@ -169,7 +231,7 @@ export default function RecipeDetails() {
     }
     setIsCheckingOut(true);
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/create-checkout-session`, {
+      const res = await fetchWithAuth(`/api/create-checkout-session`, {
         method: 'POST',
         body: JSON.stringify({ type: 'recipe', recipeId: id })
       });
@@ -317,6 +379,20 @@ export default function RecipeDetails() {
 
 
 
+          {/* Ask AI Sous Chef Button */}
+          <button
+            onClick={() => {
+              const el = document.getElementById('ai-sous-chef-section');
+              if (el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+            className="flex items-center space-x-2 border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 px-5 py-3 rounded-2xl text-sm font-semibold text-amber-600 dark:text-amber-400 transition-all cursor-pointer shadow-sm"
+          >
+            <Sparkles size={18} className="text-amber-500 animate-pulse" />
+            <span>Ask AI Sous-Chef</span>
+          </button>
+
           <button
             onClick={() => setShowReportModal(true)}
             className="flex items-center space-x-2 border border-border-custom bg-card-custom hover:bg-foreground-custom/5 px-5 py-3 rounded-2xl text-sm font-semibold text-red-500 transition-all ml-auto"
@@ -330,8 +406,9 @@ export default function RecipeDetails() {
       {/* Recipe Content (Locked / Unlocked) */}
       <div className="pt-6">
         {hasAccess ? (
-          /* Unlocked / Authorized View **/
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          /* Unlocked / Authorized View */
+          <div className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Ingredients */}
             <div className="md:col-span-1 space-y-4">
               <h2 className="text-xl font-bold text-foreground-custom flex items-center gap-2">
@@ -358,6 +435,137 @@ export default function RecipeDetails() {
               </div>
             </div>
           </div>
+
+          {/* AI Sous-Chef Interactive Assistant Section */}
+          <div id="ai-sous-chef-section" className="pt-8">
+            <div className="bg-card-custom border border-border-custom rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
+              {/* Sous Chef Header */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border-custom">
+                <div className="flex items-center space-x-3">
+                  <div className="h-12 w-12 rounded-2xl bg-gradient-to-tr from-amber-500/20 to-brand/20 flex items-center justify-center text-amber-500 shadow-inner shrink-0">
+                    <Bot size={26} />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-lg font-bold text-foreground-custom">AI Sous-Chef Assistant</h3>
+                      <span className="text-[10px] bg-amber-500/10 text-amber-500 font-bold px-2 py-0.5 rounded-full uppercase border border-amber-500/20">
+                        Gemini 3.6
+                      </span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-foreground-custom/60">
+                      Need ingredient substitutions, serving adjustments, or cooking tips for this recipe? Ask below!
+                    </p>
+                  </div>
+                </div>
+
+                {chefMessages.length > 0 && (
+                  <button
+                    onClick={() => setChefMessages([])}
+                    className="text-xs text-foreground-custom/50 hover:text-foreground-custom flex items-center gap-1 self-start sm:self-center"
+                  >
+                    <RefreshCw size={13} />
+                    <span>Clear chat</span>
+                  </button>
+                )}
+              </div>
+
+              {/* Quick Action Prompt Pills */}
+              <div className="space-y-2">
+                <span className="text-xs font-semibold text-foreground-custom/60 block">
+                  Quick Prompts (Click to ask instantly):
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    "🔄 What can I substitute for the main ingredients?",
+                    "👥 How do I scale this recipe for more servings?",
+                    "🌱 How can I make this vegetarian or vegan?",
+                    "🌾 Can I make this gluten-free?",
+                    "⏱️ Any time-saving kitchen tips?",
+                    "🍷 What drink or side dish pairs well with this?",
+                  ].map((pill, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      disabled={isChefThinking}
+                      onClick={() => handleAskSousChef(pill.replace(/^[^\s]+\s/, ''))}
+                      className="text-xs bg-foreground-custom/5 hover:bg-brand/10 hover:text-brand border border-border-custom rounded-xl px-3 py-1.5 transition-all text-foreground-custom/80 text-left disabled:opacity-50 cursor-pointer"
+                    >
+                      {pill}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Chat Messages */}
+              <div className="space-y-4 max-h-[400px] overflow-y-auto pr-1">
+                {chefMessages.length === 0 ? (
+                  <div className="p-4 rounded-2xl bg-foreground-custom/5 border border-border-custom text-center text-xs text-foreground-custom/60">
+                    Click any quick prompt above or type your question below to ask the AI Sous-Chef.
+                  </div>
+                ) : (
+                  chefMessages.map((msg, i) => (
+                    <div
+                      key={i}
+                      className={`flex gap-3 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                    >
+                      {msg.role === 'assistant' && (
+                        <div className="h-8 w-8 rounded-full bg-brand/10 text-brand flex items-center justify-center shrink-0 mt-0.5">
+                          <ChefHat size={16} />
+                        </div>
+                      )}
+                      <div
+                        className={`rounded-2xl p-4 text-xs sm:text-sm max-w-[85%] sm:max-w-[75%] leading-relaxed ${
+                          msg.role === 'user'
+                            ? 'bg-brand text-white rounded-tr-none'
+                            : 'bg-foreground-custom/5 text-foreground-custom border border-border-custom rounded-tl-none whitespace-pre-wrap'
+                        }`}
+                      >
+                        {msg.content}
+                      </div>
+                    </div>
+                  ))
+                )}
+
+                {isChefThinking && (
+                  <div className="flex gap-3 justify-start items-center">
+                    <div className="h-8 w-8 rounded-full bg-brand/10 text-brand flex items-center justify-center shrink-0">
+                      <Loader2 size={16} className="animate-spin" />
+                    </div>
+                    <div className="rounded-2xl p-3 bg-foreground-custom/5 border border-border-custom text-xs text-foreground-custom/60 flex items-center gap-2">
+                      <Sparkles size={14} className="text-amber-500 animate-pulse" />
+                      <span>Sous-Chef is reviewing the recipe and preparing expert advice...</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Chat Input Bar */}
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleAskSousChef();
+                }}
+                className="flex items-center gap-2 pt-2 border-t border-border-custom"
+              >
+                <input
+                  type="text"
+                  value={chefInput}
+                  onChange={(e) => setChefInput(e.target.value)}
+                  placeholder="Ask Sous-Chef a question (e.g. Can I use almond flour instead?)..."
+                  disabled={isChefThinking}
+                  className="flex-1 bg-card-custom border border-border-custom rounded-2xl p-3 text-xs sm:text-sm text-foreground-custom focus:outline-none focus:border-brand"
+                />
+                <button
+                  type="submit"
+                  disabled={!chefInput.trim() || isChefThinking}
+                  className="bg-brand hover:bg-brand-hover text-white p-3 rounded-2xl transition-all disabled:opacity-50 flex items-center justify-center shrink-0 cursor-pointer shadow-md"
+                >
+                  <Send size={16} />
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
         ) : (
           /* Locked Stripe Payment Screen */
           <div className="border border-border-custom bg-card-custom rounded-3xl p-8 sm:p-12 text-center space-y-6 max-w-xl mx-auto shadow-xl">

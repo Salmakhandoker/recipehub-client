@@ -33,14 +33,7 @@ export default function Register() {
     body.append('image', file);
 
     try {
-      const imgbb_API_KEY = process.env.NEXT_PUBLIC_IMAGE_UPLOAD_API;
-      if (!imgbb_API_KEY) {
-        setError('ImgBB API key is not configured.');
-        setUploadingImage(false);
-        return;
-      }
-
-      const imgbbRes = await fetch(`https://api.imgbb.com/1/upload?key=${imgbb_API_KEY}`, {
+      const imgbbRes = await fetch(`/api/image-upload`, {
         method: 'POST',
         body
       });
@@ -91,7 +84,7 @@ export default function Register() {
 
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/register`, {
+      const res = await fetch(`/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -106,7 +99,7 @@ export default function Register() {
         setUser(data.user);
         
         // Fetch favorites
-        const favsRes = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/favorites`, {
+        const favsRes = await fetch(`/api/favorites`, {
           headers: {
             'Authorization': `Bearer ${data.token}`
           }

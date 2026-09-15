@@ -18,7 +18,7 @@ export function AppProvider({ children }) {
     if (session && !user) {
       const syncSocial = async () => {
         try {
-          const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/google-callback`, {
+          const res = await fetch(`/api/auth/google-callback`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -35,7 +35,7 @@ export function AppProvider({ children }) {
               localStorage.setItem('token', data.token);
               setUser(data.user);
               // Fetch favorites for this newly synced user
-              const favsRes = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/favorites`, {
+              const favsRes = await fetch(`/api/favorites`, {
                 headers: {
                   'Authorization': `Bearer ${data.token}`
                 }
@@ -109,7 +109,7 @@ export function AppProvider({ children }) {
     }
 
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/me`);
+      const res = await fetchWithAuth(`/api/auth/me`);
       if (res.ok) {
         const data = await res.json();
         if (data.success) {
@@ -132,7 +132,7 @@ export function AppProvider({ children }) {
 
   const fetchFavorites = async () => {
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/favorites`);
+      const res = await fetchWithAuth(`/api/favorites`);
       if (res.ok) {
         const data = await res.json();
         if (data.success) {
@@ -154,7 +154,7 @@ export function AppProvider({ children }) {
 
   const logout = async () => {
     try {
-      await fetchWithAuth(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/logout`, {
+      await fetchWithAuth(`/api/auth/logout`, {
         method: 'POST',
       });
     } catch (error) {

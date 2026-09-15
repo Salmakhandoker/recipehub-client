@@ -22,7 +22,7 @@ export default function BrowseRecipes() {
     setLoading(true);
     try {
       const categoryParam = selectedCategories.join(',');
-      const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/recipes?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}&category=${encodeURIComponent(categoryParam)}`;
+      const url = `/api/recipes?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}&category=${encodeURIComponent(categoryParam)}`;
       
       const res = await fetch(url);
       if (res.ok) {
