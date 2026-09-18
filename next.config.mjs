@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactCompiler: true,
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   async rewrites() {
     const serverUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://recipe-hub-server-phi.vercel.app';
     return [

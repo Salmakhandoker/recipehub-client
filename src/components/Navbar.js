@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
-import { Menu, X, Sun, Moon, LogOut, User, LayoutDashboard, ChevronDown, Sparkles } from 'lucide-react';
+import { Menu, X, Sun, Moon, LogOut, User, LayoutDashboard, ChevronDown, Sparkles, Wand2, ChefHat } from 'lucide-react';
 
 export default function Navbar() {
   const { user, theme, toggleTheme, logout } = useApp();
@@ -36,28 +36,41 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Nav Links */}
-          <div className="hidden md:flex items-center space-x-8">
-            {links.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className={`text-sm font-medium transition-colors flex items-center gap-1.5 ${
-                  isActive(link.href)
-                    ? 'text-brand font-semibold'
-                    : link.isSpecial
-                    ? 'text-amber-500 hover:text-amber-600 font-semibold'
-                    : 'text-foreground-custom/80 hover:text-brand'
-                }`}
-              >
-                {link.isSpecial && <Sparkles size={14} className="text-amber-500 animate-pulse" />}
-                <span>{link.name}</span>
-                {link.isSpecial && (
-                  <span className="text-[10px] bg-amber-500/10 text-amber-500 font-bold px-1.5 py-0.5 rounded-full uppercase border border-amber-500/20">
-                    New
-                  </span>
-                )}
-              </Link>
-            ))}
+          <div className="hidden md:flex items-center space-x-6">
+            {links.map((link) => {
+              if (link.isSpecial) {
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className={`text-xs font-bold transition-all flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border shadow-sm ${
+                      isActive(link.href)
+                        ? 'bg-gradient-to-r from-amber-500 to-brand text-white border-transparent shadow-brand/20'
+                        : 'bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-brand/10 hover:from-amber-500/20 hover:to-brand/20 text-amber-600 dark:text-amber-400 border-amber-500/30 hover:scale-105'
+                    }`}
+                  >
+                    <Sparkles size={14} className="text-amber-500 animate-pulse" />
+                    <span>AI Chef</span>
+                    <span className="text-[9px] bg-gradient-to-r from-amber-500 to-brand text-white font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">
+                      ✨ New
+                    </span>
+                  </Link>
+                );
+              }
+              return (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className={`text-sm font-medium transition-colors ${
+                    isActive(link.href)
+                      ? 'text-brand font-semibold'
+                      : 'text-foreground-custom/80 hover:text-brand'
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
           </div>
 
           {/* Right Section: Theme Toggle & User Auth */}

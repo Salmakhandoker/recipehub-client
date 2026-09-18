@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
 import {
   LayoutDashboard, User, PlusCircle, BookOpen, Heart, ShoppingBag,
-  Users, AlertOctagon, FileText, Menu, X, Loader2, Award, Star
+  Users, AlertOctagon, FileText, Menu, X, Loader2, Award, Star, Sparkles
 } from 'lucide-react';
 
 export default function DashboardLayout({ children }) {
@@ -36,7 +36,8 @@ export default function DashboardLayout({ children }) {
   const userLinks = [
     { name: 'Overview', href: '/dashboard', icon: LayoutDashboard },
     { name: 'My Profile', href: '/dashboard/profile', icon: User },
-    { name: 'Add Recipe', href: '/dashboard/add-recipe', icon: PlusCircle },
+    { name: 'Add Recipe (AI ✨)', href: '/dashboard/add-recipe', icon: PlusCircle },
+    { name: 'AI Pantry Chef', href: '/ai-chef', icon: Sparkles },
     { name: 'My Recipes', href: '/dashboard/my-recipes', icon: BookOpen },
     { name: 'Favorites', href: '/dashboard/favorites', icon: Heart },
     { name: 'Purchased Recipes', href: '/dashboard/purchased', icon: ShoppingBag },
