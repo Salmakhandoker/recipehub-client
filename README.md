@@ -22,6 +22,11 @@ RecipeHub is a premium, full-stack recipe sharing platform where food enthusiast
 
 ## ✨ Features
 
+### 🤖 AI-Powered Features (Google Gemini 3.6 Flash)
+- **AI Recipe Generator & Smart Auto-Fill ("Magic Chef"):** Create complete, structured recipes from an idea or prompt with 1-click auto-fill in the Add Recipe form.
+- **Interactive AI Sous-Chef Assistant:** Contextual culinary assistant on each recipe page answering questions about ingredient substitutions, serving scaling, dietary swaps (vegan/gluten-free), and cooking techniques.
+- **AI Pantry Chef ("What's In My Fridge?"):** Dedicated `/ai-chef` page where users input available fridge and pantry ingredients to generate personalized, delicious meals with zero food waste.
+
 ### 👤 User Features
 - **Authentication:** Secure credential sign-up/log-in and Google OAuth via Better Auth.
 - **Catalog Navigation:** Browse recipes by categories with server-side pagination.
